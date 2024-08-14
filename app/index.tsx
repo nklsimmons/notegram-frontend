@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FlatList, Text, View, TextInput, Button, TouchableHighlight } from "react-native";
+import { FlatList, Text, View, Button, ScrollView } from "react-native";
 import CreateNoteCard from './components/CreateNoteCard';
 import NoteCard from './components/NoteCard';
 import LoginForm from  './components/LoginForm';
@@ -27,7 +27,7 @@ export default function Index() {
   }
 
   useEffect(() => {
-    getNotes();
+    refreshNotes();
   }, [user]);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Index() {
     getUser();
   }, []);
 
-  function getNotes() {
+  function refreshNotes() {
     if(user === null) {
       return;
     }
@@ -59,79 +59,60 @@ export default function Index() {
     });
   }
 
-  function submitNote(event) {
-    event.preventDefault();
-
-    fetch('http://localhost:3000/api/notes', {
-      method: 'post',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + user.token,
-      },
-      body: JSON.stringify({
-        text: event.target.text.value,
-      }),
-    })
-    .then(res => {
-      event.target.text.value = '';
-      getNotes();
-    })
-    .catch(err => {
-      console.log(err);
-      // console.log('Error');
-    });
-  }
-
   if (user)
     return (
-      <View>
-        <View
-          // style={{
-          //   flex: 1,
-          //   justifyContent: "center",
-          //   alignItems: "center",
-          //   flexDirection: 'row',
-          // }}
-        >
-          <Text>User: {user.username}</Text>
-          <form>
-            <Button title="Logout" onPress={() => {
-              console.log('pressed');
-              saveUser(null);
-            }} />
-          </form>
-        </View>
-        <CreateNoteCard onSubmit={submitNote} onPressRefresh={getNotes} />
+      <>
         <View
           style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: 'row',
+            marginBottom: 10,
           }}
         >
-          <FlatList
-            data={notes}
+          <Text>User: {user.username}</Text>
+          <View>
+            <Button title="Logout" onPress={() => {
+              saveUser(null);
+            }} />
+          </View>
+        </View>
+        <CreateNoteCard user={user} onPressRefresh={refreshNotes} />
+        <ScrollView
+          style={{
+            margin: 20,
+          }}
+        >
+          <View
             style={{
               flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
               flexDirection: 'row',
             }}
-            // contentContainerStyle={{
-            //   alignItems: "center",
-            // }}
-            ItemSeparatorComponent={
-              ({highlighted}) => (
-                <View>
-                  <Text>----------------</Text>
-                </View>
-              )
-            }
-            renderItem={({item, index, seperators}) => (
-              <NoteCard key={item._id} note={item} />
-            )}
-          />
-        </View>
-      </View>
+          >
+            <FlatList
+              data={notes}
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                // width: 'auto',
+              }}
+              contentContainerStyle={{
+                flex: 1,
+                alignItems: 'center',
+              }}
+              // ItemSeparatorComponent={
+              //   ({highlighted}) => (
+              //     <View>
+              //       <Text>----------------</Text>
+              //     </View>
+              //   )
+              // }
+              renderItem={({item, index, seperators}) => (
+                <NoteCard noteId={item._id} note={item} onRefresh={refreshNotes} />
+              )}
+            />
+          </View>
+        </ScrollView>
+      </>
     );
   else
     return (

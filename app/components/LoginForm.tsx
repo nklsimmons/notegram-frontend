@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-import { FlatList, Text, View, TextInput, Button, TouchableHighlight } from "react-native";
-import CreateNoteCard from './components/CreateNoteCard';
-import NoteCard from './components/NoteCard';
+import { useState } from 'react';
+import { View, TextInput, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
