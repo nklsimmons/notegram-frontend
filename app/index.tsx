@@ -1,66 +1,140 @@
-import { useState } from 'react';
-import { Text, View, TextInput, Button } from "react-native";
+import { useState, useEffect } from 'react';
+import { FlatList, Text, View, TextInput, Button, TouchableHighlight } from "react-native";
+import CreateNoteCard from './components/CreateNoteCard';
+import NoteCard from './components/NoteCard';
+import LoginForm from  './components/LoginForm';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Index() {
   const [user, setUser] = useState(null);
+  const [notes, setNotes] = useState([]);
 
-  function onSubmit(event) {
-    event.preventDefault();
+  // type User = {
+  //   id: string;
+  //   token: string;
+  //   username: string;
+  // }
 
-    fetch('http://localhost:3000/api/auth/login', {
-      method: 'post',
+  const saveUser = async (user) => {
+    try {
+      const userString = JSON.stringify(user);
+      await AsyncStorage.setItem('user', userString);
+      setUser(user);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    getNotes();
+  }, [user]);
+
+  useEffect(() => {
+    async function getUser() {
+      const userString = await AsyncStorage.getItem('user');
+      const user = JSON.parse(userString);
+      setUser(user);
+    }
+    getUser();
+  }, []);
+
+  function getNotes() {
+    if(user === null) {
+      return;
+    }
+
+    fetch('http://localhost:3000/api/notes', {
       headers: {
-        "Content-Type": "application/json",
+        "Authorization": "Bearer " + user.token,
       },
-      body: JSON.stringify({
-        username: event.target.email.value,
-        password: event.target.password.value,
-      }),
     })
     .then(res => res.json())
     .then(body => {
-      setUser(body);
-      // Save in session
+      setNotes(body);
     })
     .catch(err => {
-      console.log('Error');
+      console.log('Error fetching notes');
+      console.log(err);
+    });
+  }
+
+  function submitNote(event) {
+    event.preventDefault();
+
+    fetch('http://localhost:3000/api/notes', {
+      method: 'post',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + user.token,
+      },
+      body: JSON.stringify({
+        text: event.target.text.value,
+      }),
+    })
+    .then(res => {
+      event.target.text.value = '';
+      getNotes();
+    })
+    .catch(err => {
+      console.log(err);
+      // console.log('Error');
     });
   }
 
   if (user)
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <p>Hello</p>
+      <View>
+        <View
+          // style={{
+          //   flex: 1,
+          //   justifyContent: "center",
+          //   alignItems: "center",
+          //   flexDirection: 'row',
+          // }}
+        >
+          <Text>User: {user.username}</Text>
+          <form>
+            <Button title="Logout" onPress={() => {
+              console.log('pressed');
+              saveUser(null);
+            }} />
+          </form>
+        </View>
+        <CreateNoteCard onSubmit={submitNote} onPressRefresh={getNotes} />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: 'row',
+          }}
+        >
+          <FlatList
+            data={notes}
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+            }}
+            // contentContainerStyle={{
+            //   alignItems: "center",
+            // }}
+            ItemSeparatorComponent={
+              ({highlighted}) => (
+                <View>
+                  <Text>----------------</Text>
+                </View>
+              )
+            }
+            renderItem={({item, index, seperators}) => (
+              <NoteCard key={item._id} note={item} />
+            )}
+          />
+        </View>
       </View>
     );
   else
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <form onSubmit={onSubmit}>
-          <TextInput
-            id="email"
-            name="email"
-            placeholder="Email" />
-          <TextInput
-            id="password"
-            name="password"
-            secureTextEntry={true}
-            placeholder="Password"
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </View>
+      <LoginForm />
     );
 }
