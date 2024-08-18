@@ -11,7 +11,6 @@ export default function LoginForm() {
     try {
       const userString = JSON.stringify(user);
       await AsyncStorage.setItem('user', userString);
-      // setUser(user);
       window.location.reload();
     } catch (e) {
       console.log(e);
@@ -34,12 +33,7 @@ export default function LoginForm() {
     .then(res => res.json())
     .then((user) => {
       saveUser(user);
-
-      // Save in session
     })
-    // .then(() => {
-    //   getNotes();
-    // })
     .catch(err => {
       console.log('Error logging in');
       console.log(err);
