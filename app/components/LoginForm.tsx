@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { View, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
 
   const saveUser = async (user) => {
     try {
@@ -17,8 +19,18 @@ export default function LoginForm() {
     }
   }
 
-  function login(event) {
-    event.preventDefault();
+  function login() {
+    if(username === '') {
+      setError('Username must not be empty');
+      return;
+    }
+
+    if(password === '') {
+      setError('Password must not be empty');
+      return;
+    }
+
+    setError('');
 
     fetch('http://localhost:3000/api/auth/login', {
       method: 'post',
@@ -35,9 +47,21 @@ export default function LoginForm() {
       saveUser(user);
     })
     .catch(err => {
+      setError('Error logging in');
       console.log('Error logging in');
       console.log(err);
     });
+  }
+
+  let errorMessage;
+  if(error) {
+    errorMessage = (
+      <Text
+        style={{
+          color: 'red',
+        }}
+      >{ error }</Text>
+    );
   }
 
   return (
@@ -57,6 +81,7 @@ export default function LoginForm() {
         placeholder="Password"
       />
       <Button title="Login" /*onPress={onLogin}*/ onPress={login} />
+      { errorMessage }
     </View>
   );
 }
