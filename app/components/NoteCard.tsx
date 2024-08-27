@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { Alert, FlatList, Modal, Text, View, Pressable, StyleSheet, TextInput } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default function NoteCard({ noteId, note, onRefresh }) {
   const [addTagsModalVisible, setAddTagsModalVisible] = useState(false);
   const [newTagInput, setNewTagInput] = useState(null);

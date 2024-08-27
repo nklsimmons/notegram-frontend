@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { View, TextInput, Button } from "react-native";
 
+
 export default function CreateNoteCard({ user, onPressRefresh }) {
   const [newNote, setNewNote] = useState(null);
   const inputRef = useRef(null);

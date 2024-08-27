@@ -85,7 +85,4 @@ export default function LoginForm() {
     </View>
   );
 }
-function setUser(user: any) {
-  throw new Error('Function not implemented.');
-}
 
