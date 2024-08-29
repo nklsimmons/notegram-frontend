@@ -11,7 +11,7 @@ export default function HomePage({ navigation }) {
 
   useEffect(() => {
     async function getUser() {
-      const userString = await AsyncStorage.getItem('user');
+      const userString = await AsyncStorage.getItem('userToken');
       const user = JSON.parse(userString);
       if(user === null) {
         navigation.navigate('LoginForm');
@@ -25,7 +25,7 @@ export default function HomePage({ navigation }) {
   const saveUser = async (user) => {
     try {
       const userString = JSON.stringify(user);
-      await AsyncStorage.setItem('user', userString);
+      await AsyncStorage.setItem('userToken', userString);
     } catch (e) {
       console.log(e);
     }

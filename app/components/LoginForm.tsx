@@ -1,21 +1,19 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button, TextInput } from 'react-native-paper';
 
-
-export default function LoginForm() {
+export default function LoginForm({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-
-  const saveUser = async (user) => {
+  const saveUserToken = async (token) => {
     try {
-      const userString = JSON.stringify(user);
-      await AsyncStorage.setItem('user', userString);
+      await AsyncStorage.setItem('userToken', JSON.stringify(token));
       window.location.reload();
     } catch (e) {
-      console.log(e);
+      console.log('error', e);
     }
   }
 
@@ -43,12 +41,12 @@ export default function LoginForm() {
       }),
     })
     .then(res => res.json())
-    .then((user) => {
-      saveUser(user);
+    .then((res) => {
+      if(res.error) setError(res.error);
+      else saveUserToken(res);
     })
     .catch(err => {
       setError('Error logging in');
-      console.log('Error logging in');
       console.log(err);
     });
   }
@@ -59,6 +57,7 @@ export default function LoginForm() {
       <Text
         style={{
           color: 'red',
+          textAlign: 'center',
         }}
       >{ error }</Text>
     );
@@ -67,22 +66,55 @@ export default function LoginForm() {
   return (
     <View
       style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        padding: 20,
+        margin: 20,
+        width: '100%',
+        maxWidth: 340,
+        alignContent: 'center',
+        alignSelf: 'center',
+        backgroundColor: '#fff',
       }}
     >
       <TextInput
         onChangeText={(username) => setUsername(username)}
+        value={username}
         placeholder="Email" />
       <TextInput
         onChangeText={(password) => setPassword(password)}
+        value={password}
         secureTextEntry={true}
         placeholder="Password"
       />
-      <Button title="Login" /*onPress={onLogin}*/ onPress={login} />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          padding: 10
+        }}
+      >
+        <Button
+          mode="contained"
+          style={{
+            alignContent: 'center',
+            height: 40,
+          }}
+          onPress={login}
+        >
+          <Text>Login</Text>
+        </Button>
+        <Button
+          style={{
+            alignContent: 'center',
+            height: 40,
+          }}
+          mode="contained"
+          onPress={() => navigation.navigate('RegisterForm')}
+        >
+          <Text>Register</Text>
+        </Button>
+      </View>
       { errorMessage }
     </View>
   );
 }
-
