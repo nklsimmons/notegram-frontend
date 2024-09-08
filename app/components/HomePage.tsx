@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function HomePage({ navigation }) {
   const [user, setUser] = useState(null);
   const [notes, setNotes] = useState([]);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
     async function getUser() {
@@ -33,7 +34,13 @@ export default function HomePage({ navigation }) {
 
   useEffect(() => {
     refreshNotes();
+    refreshTags();
   }, [user]);
+
+  function refresh() {
+    refreshNotes();
+    refreshTags();
+  }
 
   function refreshNotes() {
     if(user === null) {
@@ -51,6 +58,26 @@ export default function HomePage({ navigation }) {
     })
     .catch(err => {
       console.log('Error fetching notes');
+      console.log(err);
+    });
+  }
+
+  function refreshTags() {
+    if(user === null) {
+      return;
+    }
+
+    fetch('http://localhost:3000/api/notes/tags', {
+      headers: {
+        "Authorization": "Bearer " + user.token,
+      },
+    })
+    .then(res => res.json())
+    .then(body => {
+      setTags(body);
+    })
+    .catch(err => {
+      console.log('Error fetching tags');
       console.log(err);
     });
   }
@@ -77,7 +104,41 @@ export default function HomePage({ navigation }) {
             }} />
           </View>
         </View>
-        <CreateNoteCard user={user} onPressRefresh={refreshNotes} />
+
+        {/*<View
+          style={{
+            background: 'white',
+            padding: 10,
+          }}
+        >
+          <FlatList
+            data={tags}
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              // width: 'auto',
+            }}
+            contentContainerStyle={{
+              flex: 1,
+              alignItems: 'center',
+            }}
+            renderItem={({item, index, seperators}) => (
+              <View
+                style={{
+                  padding: 5,
+                  margin: 5,
+                  backgroundColor: 'rgba(33, 150, 243, 1.00)',
+                }}
+              >
+                <Text
+                  style={{
+                    color: 'white',
+                  }}
+                >{item}</Text>
+              </View>
+            )}
+          />
+        </View>*/}
         <ScrollView
           style={{
             margin: 20,
@@ -102,19 +163,13 @@ export default function HomePage({ navigation }) {
                 flex: 1,
                 alignItems: 'center',
               }}
-              // ItemSeparatorComponent={
-              //   ({highlighted}) => (
-              //     <View>
-              //       <Text>----------------</Text>
-              //     </View>
-              //   )
-              // }
               renderItem={({item, index, seperators}) => (
-                <NoteCard noteId={item._id} note={item} onRefresh={refreshNotes} />
+                <NoteCard noteId={item._id} note={item} onRefresh={refresh} />
               )}
             />
           </View>
         </ScrollView>
+        <CreateNoteCard user={user} onPressRefresh={refresh} />
       </>
     );
 }

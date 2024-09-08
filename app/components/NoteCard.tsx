@@ -8,7 +8,7 @@ export default function NoteCard({ noteId, note, onRefresh }) {
   const [newTagInput, setNewTagInput] = useState(null);
 
   async function getUser() {
-    const userString = await AsyncStorage.getItem('user');
+    const userString = await AsyncStorage.getItem('userToken');
     return JSON.parse(userString);
   }
 

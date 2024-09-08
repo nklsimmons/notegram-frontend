@@ -15,7 +15,7 @@ export default function Index() {
 
   useEffect(() => {
     async function getUser() {
-      const userString = await AsyncStorage.getItem('user');
+      const userString = await AsyncStorage.getItem('userToken');
       const user = JSON.parse(userString);
       setUser(user);
     }

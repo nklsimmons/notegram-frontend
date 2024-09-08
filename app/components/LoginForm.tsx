@@ -77,10 +77,12 @@ export default function LoginForm({ navigation }) {
     >
       <TextInput
         onChangeText={(username) => setUsername(username)}
+        onKeyPress={(e) => {if(e.key == 'Enter') login()}}
         value={username}
         placeholder="Email" />
       <TextInput
         onChangeText={(password) => setPassword(password)}
+        onKeyPress={(e) => {if(e.key == 'Enter') login()}}
         value={password}
         secureTextEntry={true}
         placeholder="Password"
