@@ -141,6 +141,7 @@ export default function HomePage({ navigation }) {
         </View>*/}
         <ScrollView
           style={{
+            maxHeight: '50%',
             margin: 20,
           }}
         >

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import { View, TextInput, Button } from "react-native";
+import { View } from "react-native";
+import { Button, Card, TextInput, Text, IconButton, MD3Colors, Divider } from 'react-native-paper';
 
 
 export default function CreateNoteCard({ user, onPressRefresh }) {
@@ -33,13 +34,23 @@ export default function CreateNoteCard({ user, onPressRefresh }) {
   }
 
   return (
-    <View
+    <Card
       style={{
-        background: 'white',
-        padding: 10,
+        alignSelf: 'center',
+        // height: '50%',
+        // borderColor: 'black',
+        // borderWidth: 1,
+        width: 300,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        // backgroundColor: 'white',
+        padding: 5,
+        margin: 5,
+        // width: '100%',
       }}
     >
-      <View
+      <Card.Content
         style={{
           flex: 1,
           flexDirection: 'row',
@@ -48,14 +59,13 @@ export default function CreateNoteCard({ user, onPressRefresh }) {
       >
         <TextInput
           style={{
-            width: '100%',
+            maxWidth: '80%',
           }}
           ref={inputRef}
           onChangeText={(input) => setNewNote(input)}
           placeholder="Write something here" />
-        <Button title="Submit" onPress={submitNote} />
-      </View>
-      <Button title="Refresh" onPress={onPressRefresh} />
-    </View>
+        <Button mode="contained" onPress={submitNote}>Submit</Button>
+      </Card.Content>
+    </Card>
   );
 }

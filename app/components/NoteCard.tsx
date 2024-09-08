@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { Alert, FlatList, Modal, View, Pressable, StyleSheet, TextInput } from "react-native";
-import { Button, Card, Text, IconButton, MD3Colors, Divider } from 'react-native-paper';
+import { Alert, FlatList, Modal, View, Pressable, StyleSheet  } from "react-native";
+import { Button, Card, Text, IconButton, MD3Colors, Divider, TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -168,11 +168,12 @@ export default function NoteCard({ noteId, note, onRefresh }) {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}>
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
+
+            <IconButton
+              icon="close-box"
+              onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}
+              // iconColor={MD3Colors.error50}
+            ></IconButton>
             <View
               style={{
                 flex: 1,
@@ -186,21 +187,13 @@ export default function NoteCard({ noteId, note, onRefresh }) {
                 }}
                 onChangeText={(input) => setNewTagInput(input)}
               />
-              <Pressable
-                style={{
-                  backgroundColor: 'rgba(33, 150, 243, 1.00)',
-                  width: 20,
-                  height: 20,
-                }}
+              <IconButton
+                icon="plus"
+                mode="contained"
+                // backgroundColor='rgba(33, 150, 243, 1.00)'
+                // iconColor={MD3Colors.white}
                 onPress={addTag}
-              >
-                <Text
-                  style={{
-                    color: 'white',
-                    textAlign: 'center',
-                  }}
-                >+</Text>
-              </Pressable>
+              ></IconButton>
             </View>
           </View>
         </View>
