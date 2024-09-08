@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import { Alert, FlatList, Modal, Text, View, Pressable, StyleSheet, TextInput } from "react-native";
+import { Alert, FlatList, Modal, View, Pressable, StyleSheet, TextInput } from "react-native";
+import { Button, Card, Text, IconButton, MD3Colors, Divider } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -56,112 +57,107 @@ export default function NoteCard({ noteId, note, onRefresh }) {
   }
 
   return (
-    <View
-      style={{
-        // borderColor: 'black',
-        // borderWidth: 1,
-        // width: 300,
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        backgroundColor: 'white',
-        padding: 5,
-        margin: 5,
-        width: '100%',
-      }}
-    >
-      <View
+    <>
+      <Card
         style={{
           // borderColor: 'black',
           // borderWidth: 1,
-          // width: 300,
+          width: 300,
           flex: 1,
-          flexDirection: 'row',
+          flexDirection: 'column',
           justifyContent: 'space-between',
-          backgroundColor: 'white',
+          // backgroundColor: 'white',
           padding: 5,
           margin: 5,
-          width: '100%',
-        }}
-      >
-        <Text>{note.text}</Text>
-        <Pressable
-          style={{
-            backgroundColor: 'rgba(33, 150, 243, 1.00)',
-            alignItems: 'center',
-            width: 20,
-            height: 20,
-          }}
-          onPress={deleteNote}
-        >
-          <Text
-            style={{
-              color: 'white',
-            }}
-          >x</Text>
-        </Pressable>
-      </View>
-      <View
-        style={{
-          borderTopColor: 'black',
-          borderTopWidth: 1,
-          // borderColor: 'black',
-          // borderWidth: 1,
-          // width: 300,
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: 'white',
-          // padding: 10,
-          // margin: 10,
           // width: '100%',
         }}
       >
-        <FlatList
-          data={note.tags}
+        <Card.Content
           style={{
+            // borderColor: 'black',
+            // borderWidth: 1,
+            // width: 300,
             flex: 1,
-            flexDirection: 'row',
-            // width: 'auto',
-          }}
-          contentContainerStyle={{
-            flex: 1,
-            alignItems: 'center',
-          }}
-          renderItem={({item, index, seperators}) => (
-            <View
-              style={{
-                padding: 5,
-                margin: 5,
-                backgroundColor: 'rgba(33, 150, 243, 1.00)',
-              }}
-            >
-              <Text
-                style={{
-                  color: 'white',
-                }}
-              >{item}</Text>
-            </View>
-          )}
-        />
-        <Pressable
-          style={{
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            // backgroundColor: 'white',
             padding: 5,
             margin: 5,
-            backgroundColor: 'rgba(33, 150, 243, 1.00)',
-            alignItems: 'center',
-            width: 20,
-            height: 20,
+            width: '100%',
           }}
-          onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}
         >
-          <Text
+          <View
             style={{
-              color: 'white',
+              alignSelf: 'flex-end',
             }}
-          >+</Text>
-        </Pressable>
-      </View>
+          >
+            <IconButton
+              icon="delete"
+              iconColor={MD3Colors.error50}
+              onPress={deleteNote}
+            ></IconButton>
+          </View>
+          <View
+            style={{
+              padding: 10,
+              margin: 10,
+            }}
+          >
+            <Text>{note.text}</Text>
+          </View>
+          <Divider />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              // backgroundColor: 'white',
+              alignItems: 'center',
+              padding: 10,
+              margin: 10,
+              // maxWidth: '100%',
+            }}
+          >
+            <FlatList
+              data={note.tags}
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                // width: 'auto',
+                maxWidth: '100%',
+              }}
+              contentContainerStyle={{
+                flex: 1,
+                alignItems: 'center',
+                // maxWidth: 20,
+              }}
+              renderItem={({item, index, seperators}) => (
+                <Button
+                  mode="contained"
+                  style={{
+                    padding: 5,
+                    margin: 5,
+                    backgroundColor: 'rgba(33, 150, 243, 1.00)',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: 'white',
+                    }}
+                  >{item}</Text>
+                </Button>
+              )}
+            />
+            <IconButton
+              icon="plus"
+              mode="contained"
+              // backgroundColor='rgba(33, 150, 243, 1.00)'
+              // iconColor={MD3Colors.white}
+              onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}
+            ></IconButton>
+          </View>
+        </Card.Content>
+      </Card>
       <Modal
         animationType="slide"
         transparent={true}
@@ -209,7 +205,7 @@ export default function NoteCard({ noteId, note, onRefresh }) {
           </View>
         </View>
       </Modal>
-    </View>
+    </>
   );
 }
 
