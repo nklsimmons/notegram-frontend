@@ -168,7 +168,6 @@ export default function NoteCard({ noteId, note, onRefresh }) {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-
             <IconButton
               icon="close-box"
               onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}

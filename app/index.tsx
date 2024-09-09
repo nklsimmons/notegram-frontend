@@ -6,7 +6,7 @@ import RegisterForm from  './components/RegisterForm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator  } from '@react-navigation/native-stack';
-
+import { PaperProvider } from 'react-native-paper';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,17 +23,19 @@ export default function Index() {
   }, []);
 
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator
-        initialRouteName="HomePage"
-        screenOptions={{
-          // headerShown: false,
-        }}
-      >
-        <Stack.Screen name="HomePage" component={HomePage} />
-        <Stack.Screen name="LoginForm" component={LoginForm} />
-        <Stack.Screen name="RegisterForm" component={RegisterForm} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer independent={true}>
+        <Stack.Navigator
+          initialRouteName="HomePage"
+          screenOptions={{
+            // headerShown: false,
+          }}
+        >
+          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="LoginForm" component={LoginForm} />
+          <Stack.Screen name="RegisterForm" component={RegisterForm} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }

@@ -104,44 +104,9 @@ export default function HomePage({ navigation }) {
             }} />
           </View>
         </View>
-
-        {/*<View
-          style={{
-            background: 'white',
-            padding: 10,
-          }}
-        >
-          <FlatList
-            data={tags}
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              // width: 'auto',
-            }}
-            contentContainerStyle={{
-              flex: 1,
-              alignItems: 'center',
-            }}
-            renderItem={({item, index, seperators}) => (
-              <View
-                style={{
-                  padding: 5,
-                  margin: 5,
-                  backgroundColor: 'rgba(33, 150, 243, 1.00)',
-                }}
-              >
-                <Text
-                  style={{
-                    color: 'white',
-                  }}
-                >{item}</Text>
-              </View>
-            )}
-          />
-        </View>*/}
         <ScrollView
           style={{
-            maxHeight: '50%',
+            // maxHeight: '50%',
             margin: 20,
           }}
         >
@@ -170,7 +135,14 @@ export default function HomePage({ navigation }) {
             />
           </View>
         </ScrollView>
-        <CreateNoteCard user={user} onPressRefresh={refresh} />
+        <View
+          style={{
+            height: 80,
+            alignItems: 'center',
+          }}
+        >
+          <CreateNoteCard user={user} onPressRefresh={refresh} />
+        </View>
       </>
     );
 }
