@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FlatList, Text, View, Button, ScrollView } from "react-native";
-import CreateNoteCard from './CreateNoteCard';
 import NoteCard from './NoteCard';
+import NotesFilter from './NotesFilter';
+import CreateNoteCard from './CreateNoteCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -137,10 +138,15 @@ export default function HomePage({ navigation }) {
         </ScrollView>
         <View
           style={{
-            height: 80,
+            padding: 20,
+            margin: 20,
             alignItems: 'center',
+flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
           }}
         >
+<NotesFilter />
           <CreateNoteCard user={user} onPressRefresh={refresh} />
         </View>
       </>
