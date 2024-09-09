@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function NoteCard({ noteId, note, onRefresh }) {
   const [addTagsModalVisible, setAddTagsModalVisible] = useState(false);
-  const [newTagInput, setNewTagInput] = useState(null);
+  const [newTagInput, setNewTagInput] = useState('');
 
   async function getUser() {
     const userString = await AsyncStorage.getItem('userToken');
@@ -60,27 +60,19 @@ export default function NoteCard({ noteId, note, onRefresh }) {
     <>
       <Card
         style={{
-          // borderColor: 'black',
-          // borderWidth: 1,
           width: 300,
           flex: 1,
           flexDirection: 'column',
           justifyContent: 'space-between',
-          // backgroundColor: 'white',
           padding: 5,
           margin: 5,
-          // width: '100%',
         }}
       >
         <Card.Content
           style={{
-            // borderColor: 'black',
-            // borderWidth: 1,
-            // width: 300,
             flex: 1,
             flexDirection: 'column',
             justifyContent: 'space-between',
-            // backgroundColor: 'white',
             padding: 5,
             margin: 5,
             width: '100%',
@@ -111,11 +103,9 @@ export default function NoteCard({ noteId, note, onRefresh }) {
               flex: 1,
               flexDirection: 'row',
               justifyContent: 'space-between',
-              // backgroundColor: 'white',
               alignItems: 'center',
               padding: 10,
               margin: 10,
-              // maxWidth: '100%',
             }}
           >
             <FlatList
@@ -123,13 +113,11 @@ export default function NoteCard({ noteId, note, onRefresh }) {
               style={{
                 flex: 1,
                 flexDirection: 'row',
-                // width: 'auto',
                 maxWidth: '100%',
               }}
               contentContainerStyle={{
                 flex: 1,
                 alignItems: 'center',
-                // maxWidth: 20,
               }}
               renderItem={({item, index, seperators}) => (
                 <Button
@@ -151,8 +139,6 @@ export default function NoteCard({ noteId, note, onRefresh }) {
             <IconButton
               icon="plus"
               mode="contained"
-              // backgroundColor='rgba(33, 150, 243, 1.00)'
-              // iconColor={MD3Colors.white}
               onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}
             ></IconButton>
           </View>
@@ -171,7 +157,6 @@ export default function NoteCard({ noteId, note, onRefresh }) {
             <IconButton
               icon="close-box"
               onPress={() => setAddTagsModalVisible(!addTagsModalVisible)}
-              // iconColor={MD3Colors.error50}
             ></IconButton>
             <View
               style={{
@@ -184,13 +169,12 @@ export default function NoteCard({ noteId, note, onRefresh }) {
                   borderWidth: 1,
                   borderColor: 'black',
                 }}
+                value={newTagInput}
                 onChangeText={(input) => setNewTagInput(input)}
               />
               <IconButton
                 icon="plus"
                 mode="contained"
-                // backgroundColor='rgba(33, 150, 243, 1.00)'
-                // iconColor={MD3Colors.white}
                 onPress={addTag}
               ></IconButton>
             </View>

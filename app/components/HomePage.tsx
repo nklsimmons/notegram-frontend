@@ -124,7 +124,6 @@ export default function HomePage({ navigation }) {
               style={{
                 flex: 1,
                 flexDirection: 'row',
-                // width: 'auto',
               }}
               contentContainerStyle={{
                 flex: 1,
@@ -141,12 +140,12 @@ export default function HomePage({ navigation }) {
             padding: 20,
             margin: 20,
             alignItems: 'center',
-flex: 1,
+            flex: 1,
             flexDirection: 'row',
             justifyContent: 'center',
           }}
         >
-<NotesFilter />
+          <NotesFilter />
           <CreateNoteCard user={user} onPressRefresh={refresh} />
         </View>
       </>
